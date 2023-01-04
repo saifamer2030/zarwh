@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "520982352544",
+    "project_id": "zarwh-93d89",
+    "storage_bucket": "zarwh-93d89.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:520982352544:android:3c92b39332c3e79b2cefc5",
+        "android_client_info": {
+          "package_name": "com.info.zarwh"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "520982352544-g1kuhs2dl69ipm0iuog4vacgam6s0sli.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.info.zarwh",
+            "certificate_hash": "8a272be655cb0ba460f26c6532c2b351b1ff3d59"
+          }
+        },
+        {
+          "client_id": "520982352544-31npuskvtm5jga002rjeqmt706bgmbs9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoJgiQyypSprZCCfY8xLHqpObODhmL8kg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "520982352544-31npuskvtm5jga002rjeqmt706bgmbs9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
