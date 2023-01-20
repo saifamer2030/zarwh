@@ -11,8 +11,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:vision/splash.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:http/http.dart' as http;
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
@@ -142,7 +144,35 @@ class _MyHomePageState extends State<MyHomePage> {
     _determinePosition();
     super.initState();
   }
+  final RefreshController _refreshController =
+  RefreshController(initialRefresh: false);
 
+  void _onRefresh() async {
+    // monitor network fetch
+    await Future.delayed(const Duration(milliseconds: 1000));
+    if (mounted) {
+
+    }
+    // setState(() {
+    //
+    // });
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading() async {
+    // monitor network fetch
+    await Future.delayed(const Duration(milliseconds: 1000));
+    // if failed,use loadFailed(),if no data return,use LoadNodata()
+    /// إضافة ايتم
+    if (mounted) {
+
+    }
+    // setState(() {
+    //
+    //
+    // });
+    _refreshController.loadComplete();
+  }
   /// Determine the current position of the device.
   ///
   /// When the location services are not enabled or permissions
@@ -212,11 +242,18 @@ class _MyHomePageState extends State<MyHomePage> {
       },
     );
   }
+  late WebViewController webViewController;
  final sessionCookie = const WebViewCookie(
   name: 'my_session_cookie',
   value: 'cookie_value',
   domain: 'www.zarwh.com/app',
   );
+  Future<void> _refresh(){
+    // one of these should work. uncomment and see which one works.
+    // controller.refresh()
+    // controller.reload()
+    return Future.delayed(const Duration(seconds: 2));
+  }
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -227,62 +264,125 @@ class _MyHomePageState extends State<MyHomePage> {
         return false;
       },
       child: Scaffold(
+
         // backgroundColor:const Color(0xff37bfc3) ,
         // appBar: AppBar(
         //   backgroundColor: Colors.white,
         //   centerTitle: true,
         //   automaticallyImplyLeading: false,
         // ),
-        body: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 0.0),
-              child: WebView(
-                zoomEnabled: false,
-                initialCookies: [sessionCookie],
-                  key: webViewKey,
-                  gestureRecognizers: {
-                    Factory<OneSequenceGestureRecognizer>(
-                      () => EagerGestureRecognizer(),
-                    ),
-                  },
-                  onWebViewCreated: (WebViewController webViewController) async {
-                    _webViewController = webViewController;
-                    _controller.complete(webViewController);
-                  },
-                  onPageFinished: (_) {
-                    _webViewController!.runJavascript(jsString);
-                    // _webViewController!.runJavascriptReturningResult(jsString);
-                    setState(() {
-                      isLoading = false;
-                    });
-                  },
-                  onPageStarted: (_){
-                    _webViewController!.runJavascript(jsString);
-                    // _webViewController!.runJavascriptReturningResult(jsString);
-                    setState(() {
-                      isLoading = true;
-                    });
-                  },
-                  // navigationDelegate: (NavigationRequest request) {
-                  //   setState(() {
-                  //     isLoading = true;
-                  //   });
-                  //
-                  //   //Any other url works
-                  //   return NavigationDecision.navigate;
-                  // },
-                  javascriptMode: JavascriptMode.unrestricted,
-                  initialUrl: this.url),
-            ),
-            isLoading
-                ? Center(
-                    child: CupertinoActivityIndicator(),
-                  )
-                : Stack(),
-          ],
+        body:   Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 0.0),
+                    child:  WebView(
+                        zoomEnabled: false,
+
+                        initialCookies: [sessionCookie],
+                          key: webViewKey,
+                      gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
+                        Factory<OneSequenceGestureRecognizer>(
+                              () => EagerGestureRecognizer(),
+                        ),
+                      },
+                          onWebViewCreated: (WebViewController webViewController) async {
+                            _webViewController = webViewController;
+                            _controller.complete(webViewController);
+                          },
+                          onPageFinished: (_) {
+                            _webViewController!.runJavascript(jsString);
+                            // _webViewController!.runJavascriptReturningResult(jsString);
+                            setState(() {
+                              isLoading = false;
+                            });
+                          },
+                          onPageStarted: (_){
+                            _webViewController!.runJavascript(jsString);
+                            // _webViewController!.runJavascriptReturningResult(jsString);
+                            setState(() {
+                              isLoading = true;
+                            });
+                          },
+                          // navigationDelegate: (NavigationRequest request) {
+                          //   setState(() {
+                          //     isLoading = true;
+                          //   });
+                          //
+                          //   //Any other url works
+                          //   return NavigationDecision.navigate;
+                          // },
+                          javascriptMode: JavascriptMode.unrestricted,
+                          initialUrl: this.url,
+                        navigationDelegate: (NavigationRequest request) {
+                          // print("a1${request.url}///${token}///${Platform.isAndroid}");
+// if(true){
+                          if(
+                          request.url.toString().toLowerCase().trim().contains(new RegExp("redirectSetToken".toLowerCase().trim(), caseSensitive: false))
+                              ||  request.url.toString().toLowerCase().trim().contains(new RegExp("https://www.zarwh.com/app/user/login/redirectSetToken?userID=".toLowerCase().trim(), caseSensitive: false))
+                          ){
+                            // if(request.url.contains("https://www.zarwh.com/app/user/login/redirectSetToken?userID=")||
+                            //     request.url.contains("redirectSetToken")){
+                            // String userID="https://www.zarwh.com/app/user/login/redirectSetToken?userID=2".toString().split("=")[1];
+
+                            String userID=request.url.toString().split("=")[1];
+                            String url = "https://www.zarwh.com/app/user/login/setToken?Auth-key=${"zarwh-set-token"}&userID=${userID}&token=${token}&platform=${Platform.isAndroid?"android":Platform.isIOS?"ios":Platform.isFuchsia?"fuchsia":Platform.isWindows?"windows":""}";
+                            Map<String, String> headers = {
+                              //    'Content-Type': 'application/json',
+                            };
+                            print("vvv////${url}");
+                            http.get(Uri.parse(url), headers: headers,
+                              //     body: {
+                              //   "platform":Platform.isAndroid?"android":Platform.isIOS?"ios":Platform.isFuchsia?"fuchsia":Platform.isWindows?"windows":"",
+                              //   "Auth-key": "zarwh-set-token",
+                              //   "userID":"165",
+                              //   "token": "123",
+                              // }
+                            ).then((response) {
+                              print("aaa${response.statusCode}");
+                              print("aaa${response.body}");
+
+                              if (response.statusCode == 200) {
+                                var body = jsonDecode(response.body);
+                                //  print("aaacc${body['mob_code']}");
+
+                                if (body['status']=='Success') {
+
+                                } else {
+
+                                }
+                              } else {
+
+                              }
+
+
+                            }).catchError((e) {
+
+                              print('eeee:${e.toString()}');
+
+                            });
+                            return NavigationDecision.navigate;
+                          }else{
+
+                            return NavigationDecision.navigate;
+                          }
+
+
+                        },
+
+                      ),
+
+                  ),
+                  isLoading
+                      ? Center(
+                          child: CupertinoActivityIndicator(),
+                        )
+                      : Stack(),
+                ],
+              ),
+
+
         ),
-      ),
+
     );
   }
 
@@ -325,3 +425,4 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 }
+

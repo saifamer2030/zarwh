@@ -46,6 +46,8 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   geolocator: ^8.0.3
   flutter_native_splash: any
+  http: ^0.13.5
+  pull_to_refresh: ^2.0.0
 
 
 
@@ -66,24 +68,26 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
-flutter_native_splash:
-  #  flutter pub run flutter_native_splash:create
-
-  color: "#92C9A4"
-  image: assets/images/logo.png
-  color_dark: "#92C9A4"
-  #background_image_dark: "assets/dark-background.png"
-  image_dark: assets/images/logo.png
-  android_12:
-    image: assets/images/logo.png
-    icon_background_color: "#92C9A4"
-    image_dark: assets/images/logo.png
-    icon_background_color_dark: "#92C9A4"
-  fullscreen: true
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+#flutter_native_splash:
+#  #  flutter pub run flutter_native_splash:create
+#
+#  color: "#92C9A4"
+#  image: assets/images/logo.png
+#  color_dark: "#92C9A4"
+#  #background_image_dark: "assets/dark-background.png"
+#  image_dark: assets/images/logo.png
+#  android_12:
+#    image: assets/images/logo.png
+#    icon_background_color: "#92C9A4"
+#    image_dark: assets/images/logo.png
+#    icon_background_color_dark: "#92C9A4"
+#  fullscreen: true
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:
