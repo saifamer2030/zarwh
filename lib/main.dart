@@ -11,7 +11,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
+// import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:vision/splash.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -86,6 +86,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   String title = "";
   String url = "https://zarwh.com/app";
+  String current_url= "https://zarwh.com/app";
+  bool offset=false;
+
   bool isLoading = true;
   final _key = UniqueKey();
   String? token;
@@ -144,35 +147,35 @@ class _MyHomePageState extends State<MyHomePage> {
     _determinePosition();
     super.initState();
   }
-  final RefreshController _refreshController =
-  RefreshController(initialRefresh: false);
-
-  void _onRefresh() async {
-    // monitor network fetch
-    await Future.delayed(const Duration(milliseconds: 1000));
-    if (mounted) {
-
-    }
-    // setState(() {
-    //
-    // });
-    _refreshController.refreshCompleted();
-  }
-
-  void _onLoading() async {
-    // monitor network fetch
-    await Future.delayed(const Duration(milliseconds: 1000));
-    // if failed,use loadFailed(),if no data return,use LoadNodata()
-    /// إضافة ايتم
-    if (mounted) {
-
-    }
-    // setState(() {
-    //
-    //
-    // });
-    _refreshController.loadComplete();
-  }
+  // final RefreshController _refreshController =
+  // RefreshController(initialRefresh: false);
+  //
+  // void _onRefresh() async {
+  //   // monitor network fetch
+  //   await Future.delayed(const Duration(milliseconds: 1000));
+  //   if (mounted) {
+  //
+  //   }
+  //   // setState(() {
+  //   //
+  //   // });
+  //   _refreshController.refreshCompleted();
+  // }
+  //
+  // void _onLoading() async {
+  //   // monitor network fetch
+  //   await Future.delayed(const Duration(milliseconds: 1000));
+  //   // if failed,use loadFailed(),if no data return,use LoadNodata()
+  //   /// إضافة ايتم
+  //   if (mounted) {
+  //
+  //   }
+  //   // setState(() {
+  //   //
+  //   //
+  //   // });
+  //   _refreshController.loadComplete();
+  // }
   /// Determine the current position of the device.
   ///
   /// When the location services are not enabled or permissions
@@ -248,12 +251,12 @@ class _MyHomePageState extends State<MyHomePage> {
   value: 'cookie_value',
   domain: 'www.zarwh.com/app',
   );
-  Future<void> _refresh(){
-    // one of these should work. uncomment and see which one works.
-    // controller.refresh()
-    // controller.reload()
-    return Future.delayed(const Duration(seconds: 2));
-  }
+  // Future<void> _refresh(){
+  //   // one of these should work. uncomment and see which one works.
+  //   // controller.refresh()
+  //   // controller.reload()
+  //   return Future.delayed(const Duration(seconds: 2));
+  // }
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -273,8 +276,14 @@ class _MyHomePageState extends State<MyHomePage> {
         // ),
         body:   Stack(
                 children: [
+                  offset?  Container(
+                      height: 100,
+                      child: Center(child:  Padding(
+                        padding: const EdgeInsets.only(top:18.0),
+                        child: CupertinoActivityIndicator(),
+                      ))):Container(),
                   Padding(
-                    padding: const EdgeInsets.only(top: 0.0),
+                    padding:  EdgeInsets.only(top: offset?100.0: 0.0),
                     child:  WebView(
                         zoomEnabled: false,
 
@@ -314,12 +323,15 @@ class _MyHomePageState extends State<MyHomePage> {
                           javascriptMode: JavascriptMode.unrestricted,
                           initialUrl: this.url,
                         navigationDelegate: (NavigationRequest request) {
+                          current_url=  request.url.toString();
+                          print("current_url$current_url");
                           // print("a1${request.url}///${token}///${Platform.isAndroid}");
 // if(true){
                           if(
                           request.url.toString().toLowerCase().trim().contains(new RegExp("redirectSetToken".toLowerCase().trim(), caseSensitive: false))
                               ||  request.url.toString().toLowerCase().trim().contains(new RegExp("https://www.zarwh.com/app/user/login/redirectSetToken?userID=".toLowerCase().trim(), caseSensitive: false))
                           ){
+
                             // if(request.url.contains("https://www.zarwh.com/app/user/login/redirectSetToken?userID=")||
                             //     request.url.contains("redirectSetToken")){
                             // String userID="https://www.zarwh.com/app/user/login/redirectSetToken?userID=2".toString().split("=")[1];
@@ -377,6 +389,37 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: CupertinoActivityIndicator(),
                         )
                       : Stack(),
+                  InkWell(
+                      onTapDown: (v){
+
+                        double a=v.globalPosition.direction;
+                        // offset=(a<1)?true:false;
+                        if(a<1){
+                          setState((){
+                            offset=true;
+
+
+                            // url=Prov.url;
+                            //  print(url);
+                          });
+                          if(_webViewController!=null){
+                            print("bbb}");
+                            _webViewController!.loadUrl(current_url);}
+                          Future.delayed(const Duration(seconds: 3), () {
+                            setState(() {
+                              offset=false;
+                            });
+                          });
+                        }else{
+                          offset=false;
+                        }
+                        print("bbb${a}//$offset");
+                        // print("bbb${v.globalPosition.distance}");
+
+                      },
+                      child: Container(
+                      //  color: Colors.red.withOpacity(0.5),
+                        height: 100,)),
                 ],
               ),
 
