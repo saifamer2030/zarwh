@@ -11,6 +11,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 // import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:vision/splash.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -104,6 +105,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     // TODO: implement initState
+    Permission.phone.request();
+    Permission.photos.request();
+    Permission.storage.request();
+    Permission.camera.request();
     if (Platform.isAndroid) {
       WebView.platform = SurfaceAndroidWebView();
     }

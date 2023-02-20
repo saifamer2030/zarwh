@@ -27,13 +27,13 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Always and when in use To The site must be used to complete the payment process and also for easy access by the Candal team to you</string>
+	<string>Always and when in use To The site must be used to complete the payment process and also for easy access by the zarwh team to you</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>يجب إستخدام الموقع لاتمام عملية الدفع وايضاً لسهولة وصول فريق كاندال إليك Can I haz location always? To complete the payment process and also for easy access by the Candal team to you</string>
+	<string>يجب إستخدام الموقع لاتمام عملية الدفع وايضاً لسهولة إضافة إعلاناتك  بموقع ذروة You must use the site to complete the payment process and also to easily add your ads to a peak site</string>
 	<key>NSLocationUsageDescription</key>
-	<string>يجب إستخدام الموقع لاتمام عملية الدفع وايضاً لسهولة وصول فريق كاندال إليك Older devices need location. To complete the payment process and also for easy access by the Candal team to you</string>
+	<string>يجب إستخدام الموقع لاتمام عملية الدفع وايضاً لسهولة إضافة إعلاناتك  بموقع ذروة You must use the site to complete the payment process and also to easily add your ads to a peak site</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>يجب إستخدام الموقع لاتمام عملية الدفع وايضاً لسهولة وصول فريق كاندال إليك Need location when in use To complete the payment process and also for easy access by the Candal team to you</string>
+	<string>يجب إستخدام الموقع لاتمام عملية الدفع وايضاً لسهولة إضافة إعلاناتك  بموقع ذروة  You must use the site to complete the payment process and also to easily add your ads to a peak site</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
@@ -60,5 +60,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 </dict>
 </plist>

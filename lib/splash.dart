@@ -2,6 +2,7 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:vision/main.dart';
 
 class Splash extends StatefulWidget {
@@ -14,7 +15,10 @@ class _SplashState extends State<Splash> {
   void initState() {
     super.initState();
 
-
+    // Permission.phone.request();
+    // Permission.photos.request();
+    // Permission.storage.request();
+    // Permission.camera.request();
 
 
     Future.delayed(Duration(seconds: 4), () async {
